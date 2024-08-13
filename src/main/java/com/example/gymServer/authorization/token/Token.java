@@ -1,7 +1,7 @@
-package com.example.gymServer.authorization.auditing.token;
+package com.example.gymServer.authorization.token;
 
 
-import com.example.gymServer.authorization.auditing.user.User;
+import com.example.gymServer.authorization.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

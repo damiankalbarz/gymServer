@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.config;
+package com.example.gymServer.authorization.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

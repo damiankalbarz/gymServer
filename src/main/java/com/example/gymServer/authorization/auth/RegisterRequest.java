@@ -1,7 +1,7 @@
-package com.example.gymServer.authorization.auditing.auth;
+package com.example.gymServer.authorization.auth;
 
 
-import com.example.gymServer.authorization.auditing.user.Role;
+import com.example.gymServer.authorization.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

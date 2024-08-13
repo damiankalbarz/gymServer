@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.token;
+package com.example.gymServer.authorization.token;
 
 import java.util.List;
 import java.util.Optional;

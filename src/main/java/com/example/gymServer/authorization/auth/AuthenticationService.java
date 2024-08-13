@@ -1,12 +1,12 @@
-package com.example.gymServer.authorization.auditing.auth;
+package com.example.gymServer.authorization.auth;
 
 
-import com.example.gymServer.authorization.auditing.config.JwtService;
-import com.example.gymServer.authorization.auditing.token.Token;
-import com.example.gymServer.authorization.auditing.token.TokenRepository;
-import com.example.gymServer.authorization.auditing.token.TokenType;
-import com.example.gymServer.authorization.auditing.user.User;
-import com.example.gymServer.authorization.auditing.user.UserRepository;
+import com.example.gymServer.authorization.config.JwtService;
+import com.example.gymServer.authorization.token.Token;
+import com.example.gymServer.authorization.token.TokenRepository;
+import com.example.gymServer.authorization.token.TokenType;
+import com.example.gymServer.authorization.user.User;
+import com.example.gymServer.authorization.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,8 +16,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.gymServer.subscription.*;
+
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final SubscriptionRepository subscriptionRepository;
 
   public AuthenticationResponse register(RegisterRequest request) {
     var user = User.builder()
@@ -40,6 +44,14 @@ public class AuthenticationService {
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
+
+    var subscription = Subscription.builder()
+            .user(savedUser)
+            .startDate(LocalDate.now())
+            .endDate(LocalDate.now().minusDays(1))
+            .build();
+    subscriptionRepository.save(subscription);
+
     return AuthenticationResponse.builder()
         .accessToken(jwtToken)
             .refreshToken(refreshToken)

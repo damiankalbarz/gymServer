@@ -1,7 +1,7 @@
-package com.example.gymServer.authorization.auditing.config;
+package com.example.gymServer.authorization.config;
 
 
-import com.example.gymServer.authorization.auditing.token.TokenRepository;
+import com.example.gymServer.authorization.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

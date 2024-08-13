@@ -1,8 +1,8 @@
-package com.example.gymServer.authorization.auditing.config;
+package com.example.gymServer.authorization.config;
 
 
 import com.example.gymServer.authorization.auditing.ApplicationAuditAware;
-import com.example.gymServer.authorization.auditing.user.UserRepository;
+import com.example.gymServer.authorization.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

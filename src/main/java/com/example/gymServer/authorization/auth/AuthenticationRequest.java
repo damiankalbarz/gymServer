@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.auth;
+package com.example.gymServer.authorization.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.user;
+package com.example.gymServer.authorization.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

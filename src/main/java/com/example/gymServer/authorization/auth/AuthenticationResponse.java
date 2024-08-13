@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.auth;
+package com.example.gymServer.authorization.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

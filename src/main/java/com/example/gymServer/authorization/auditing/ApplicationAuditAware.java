@@ -1,7 +1,7 @@
 package com.example.gymServer.authorization.auditing;
 
 
-import com.example.gymServer.authorization.auditing.user.User;
+import com.example.gymServer.authorization.user.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

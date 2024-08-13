@@ -1,4 +1,4 @@
-package com.example.gymServer.authorization.auditing.user;
+package com.example.gymServer.authorization.user;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

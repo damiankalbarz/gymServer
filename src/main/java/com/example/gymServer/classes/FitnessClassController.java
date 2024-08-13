@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/classes")
+@RequestMapping("/api/v1/classes")
 public class FitnessClassController {
 
     private final FitnessClassService fitnessClassService;

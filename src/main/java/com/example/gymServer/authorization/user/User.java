@@ -1,14 +1,10 @@
-package com.example.gymServer.authorization.auditing.user;
+package com.example.gymServer.authorization.user;
 
 
-import com.example.gymServer.authorization.auditing.token.Token;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.example.gymServer.authorization.token.Token;
+import com.example.gymServer.subscription.Subscription;
+import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -33,6 +29,9 @@ public class User implements UserDetails {
   private String lastname;
   private String email;
   private String password;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Subscription subscription;
 
   @Enumerated(EnumType.STRING)
   private Role role;
