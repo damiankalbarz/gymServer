@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/membership-pass")
+@RequestMapping("/api/v1/membership-pass")
 public class MembershipPassController {
 
     @Autowired
