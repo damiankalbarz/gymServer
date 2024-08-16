@@ -1,6 +1,7 @@
 package com.example.gymServer.authorization.user;
 
 
+import com.example.gymServer.TrainingGoal.TrainingGoal;
 import com.example.gymServer.authorization.token.Token;
 import com.example.gymServer.subscription.Subscription;
 import jakarta.persistence.*;
@@ -32,6 +33,9 @@ public class User implements UserDetails {
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Subscription subscription;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TrainingGoal> trainingGoals;
 
   @Enumerated(EnumType.STRING)
   private Role role;
