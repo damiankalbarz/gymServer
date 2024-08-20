@@ -4,6 +4,7 @@ package com.example.gymServer.authorization.user;
 import com.example.gymServer.TrainingGoal.TrainingGoal;
 import com.example.gymServer.authorization.token.Token;
 import com.example.gymServer.subscription.Subscription;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -31,6 +32,7 @@ public class User implements UserDetails {
   private String email;
   private String password;
 
+
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Subscription subscription;
 
@@ -42,6 +44,7 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

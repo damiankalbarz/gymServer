@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,11 +49,12 @@ public class AuthenticationService {
     var subscription = Subscription.builder()
             .user(savedUser)
             .startDate(LocalDate.now())
-            .endDate(LocalDate.now().minusDays(1))
+            .endDate(LocalDate.now().plusDays(30))
             .build();
     subscriptionRepository.save(subscription);
 
-    return AuthenticationResponse.builder()
+
+      return AuthenticationResponse.builder()
         .accessToken(jwtToken)
             .refreshToken(refreshToken)
         .build();
