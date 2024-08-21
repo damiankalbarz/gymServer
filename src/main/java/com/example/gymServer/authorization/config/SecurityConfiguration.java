@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
+                                .requestMatchers(GET, "/api/v1/personal-trainer/**").permitAll()
                                 // Endpointy dla zalogowanych użytowkników
                                 .requestMatchers(GET, "/api/v1/personal-trainer/**", "/api/v1/classes/**").hasRole(Role.USER.name())
                                 .requestMatchers(POST, "/api/v1/training-goals").hasRole(Role.USER.name())
@@ -61,6 +62,10 @@ public class SecurityConfiguration {
                                 .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_CREATE.name(), Permission.MANAGER_CREATE.name())
                                 .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_UPDATE.name(), Permission.MANAGER_UPDATE.name())
                                 .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_DELETE.name(), Permission.MANAGER_DELETE.name())
+                                .requestMatchers(POST, "/api/v1/personal-trainer").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                                .requestMatchers(DELETE, "/api/v1/personal-trainer/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                                .requestMatchers(POST, "/api/v1/personal-trainer").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                                .requestMatchers(DELETE, "/api/v1/personal-trainer/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                                 .anyRequest()
                                 .authenticated()
                 )
