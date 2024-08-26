@@ -22,7 +22,7 @@ public class GymServerApplication {
 		SpringApplication.run(GymServerApplication.class, args);
 	}
 
-
+		/*
 	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service
@@ -47,5 +47,5 @@ public class GymServerApplication {
 			System.out.println("Manager token: " + service.register(manager).getAccessToken());
 
 		};
-	}
+	}*/
 }
