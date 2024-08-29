@@ -1,6 +1,7 @@
 package com.example.gymServer.classes;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.gymServer.authorization.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,14 +10,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/classes")
+@RequiredArgsConstructor
 public class FitnessClassController {
 
     private final FitnessClassService fitnessClassService;
-
-    @Autowired
-    public FitnessClassController(FitnessClassService fitnessClassService) {
-        this.fitnessClassService = fitnessClassService;
-    }
 
     @GetMapping
     public List<FitnessClass> getAllClasses() {
@@ -27,7 +24,7 @@ public class FitnessClassController {
     public ResponseEntity<FitnessClass> getClassById(@PathVariable Long id) {
         Optional<FitnessClass> fitnessClass = fitnessClassService.getClassById(id);
         return fitnessClass.map(ResponseEntity::ok)
-                           .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -45,5 +42,25 @@ public class FitnessClassController {
     public ResponseEntity<Void> deleteClass(@PathVariable Long id) {
         fitnessClassService.deleteClass(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/enroll")
+    public ResponseEntity<FitnessClass> enrollUser(@PathVariable Long id, @RequestParam Integer userId) {
+        Optional<FitnessClass> fitnessClass = fitnessClassService.enrollUser(id, userId);
+        return fitnessClass.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/cancel-enrollment")
+    public ResponseEntity<FitnessClass> cancelEnrollment(@PathVariable Long id, @RequestParam Integer userId) {
+        Optional<FitnessClass> fitnessClass = fitnessClassService.cancelEnrollment(id, userId);
+        return fitnessClass.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/enrolled-users")
+    public ResponseEntity<List<User>> getEnrolledUsers(@PathVariable Long id) {
+        List<User> enrolledUsers = fitnessClassService.getEnrolledUsers(id);
+        return ResponseEntity.ok(enrolledUsers);
     }
 }

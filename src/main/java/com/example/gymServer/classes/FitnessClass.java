@@ -1,13 +1,12 @@
 package com.example.gymServer.classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.gymServer.authorization.user.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,4 +28,11 @@ public class FitnessClass {
 
     private String className;
 
+    @ManyToMany
+    @JoinTable(
+            name = "class_enrollments",
+            joinColumns = @JoinColumn(name = "fitness_class_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> enrolledUsers;
 }

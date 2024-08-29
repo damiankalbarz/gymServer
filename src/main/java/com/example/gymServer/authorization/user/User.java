@@ -3,6 +3,7 @@ package com.example.gymServer.authorization.user;
 
 import com.example.gymServer.TrainingGoal.TrainingGoal;
 import com.example.gymServer.authorization.token.Token;
+import com.example.gymServer.classes.FitnessClass;
 import com.example.gymServer.subscription.Subscription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -44,6 +45,9 @@ public class User implements UserDetails {
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
+
+  @ManyToMany(mappedBy = "enrolledUsers")
+  private List<FitnessClass> enrolledClasses;
 
 
   @Override

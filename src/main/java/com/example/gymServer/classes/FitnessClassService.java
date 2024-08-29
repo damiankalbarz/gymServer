@@ -1,5 +1,7 @@
 package com.example.gymServer.classes;
 
+import com.example.gymServer.authorization.user.User;
+import com.example.gymServer.authorization.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +12,12 @@ import java.util.Optional;
 public class FitnessClassService {
 
     private final FitnessClassRepository fitnessClassRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public FitnessClassService(FitnessClassRepository fitnessClassRepository) {
+    public FitnessClassService(FitnessClassRepository fitnessClassRepository, UserRepository userRepository) {
         this.fitnessClassRepository = fitnessClassRepository;
+        this.userRepository = userRepository;
     }
 
     public List<FitnessClass> getAllClasses() {
@@ -38,5 +42,42 @@ public class FitnessClassService {
 
     public void deleteClass(Long id) {
         fitnessClassRepository.deleteById(id);
+    }
+
+    public Optional<FitnessClass> enrollUser(Long classId, Integer userId) {
+        Optional<FitnessClass> fitnessClassOpt = fitnessClassRepository.findById(classId);
+        Optional<User> userOpt = userRepository.findById(userId);
+
+        if (fitnessClassOpt.isPresent() && userOpt.isPresent()) {
+            FitnessClass fitnessClass = fitnessClassOpt.get();
+            User user = userOpt.get();
+
+            if (fitnessClass.getEnrolledUsers().size() < fitnessClass.getMaxUsers()) {
+                fitnessClass.getEnrolledUsers().add(user);
+                fitnessClassRepository.save(fitnessClass);
+                return Optional.of(fitnessClass);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<FitnessClass> cancelEnrollment(Long classId, Integer userId) {
+        Optional<FitnessClass> fitnessClassOpt = fitnessClassRepository.findById(classId);
+        Optional<User> userOpt = userRepository.findById(userId);
+
+        if (fitnessClassOpt.isPresent() && userOpt.isPresent()) {
+            FitnessClass fitnessClass = fitnessClassOpt.get();
+            User user = userOpt.get();
+            fitnessClass.getEnrolledUsers().remove(user);
+            fitnessClassRepository.save(fitnessClass);
+            return Optional.of(fitnessClass);
+        }
+        return Optional.empty();
+    }
+
+    public List<User> getEnrolledUsers(Long classId) {
+        return fitnessClassRepository.findById(classId)
+                .map(FitnessClass::getEnrolledUsers)
+                .orElseThrow(() -> new RuntimeException("Class not found"));
     }
 }
