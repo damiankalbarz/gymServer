@@ -22,7 +22,7 @@ public class GymServerApplication {
 		SpringApplication.run(GymServerApplication.class, args);
 	}
 
-		/*
+/*
 	@Bean
 	public CommandLineRunner commandLineRunner(
 			AuthenticationService service

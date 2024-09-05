@@ -3,6 +3,9 @@ package com.example.gymServer.classes;
 import com.example.gymServer.authorization.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,15 +48,18 @@ public class FitnessClassController {
     }
 
     @PostMapping("/{id}/enroll")
-    public ResponseEntity<FitnessClass> enrollUser(@PathVariable Long id, @RequestParam Integer userId) {
-        Optional<FitnessClass> fitnessClass = fitnessClassService.enrollUser(id, userId);
+    public ResponseEntity<FitnessClass> enrollUser(@PathVariable Long id) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<FitnessClass> fitnessClass = fitnessClassService.enrollUser(id, currentUser.getId());
         return fitnessClass.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
     @PostMapping("/{id}/cancel-enrollment")
-    public ResponseEntity<FitnessClass> cancelEnrollment(@PathVariable Long id, @RequestParam Integer userId) {
-        Optional<FitnessClass> fitnessClass = fitnessClassService.cancelEnrollment(id, userId);
+    public ResponseEntity<FitnessClass> cancelEnrollment(@PathVariable Long id) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<FitnessClass> fitnessClass = fitnessClassService.cancelEnrollment(id, currentUser.getId());
         return fitnessClass.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -62,5 +68,13 @@ public class FitnessClassController {
     public ResponseEntity<List<User>> getEnrolledUsers(@PathVariable Long id) {
         List<User> enrolledUsers = fitnessClassService.getEnrolledUsers(id);
         return ResponseEntity.ok(enrolledUsers);
+    }
+
+    @GetMapping("/enrolled")
+    public ResponseEntity<List<FitnessClass>> getEnrolledClassesForCurrentUser() {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<FitnessClass> classes = fitnessClassService.getEnrolledClassesForUser(currentUser.getId());
+        return ResponseEntity.ok(classes);
     }
 }

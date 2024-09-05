@@ -60,7 +60,6 @@ public class FitnessClassService {
         }
         return Optional.empty();
     }
-
     public Optional<FitnessClass> cancelEnrollment(Long classId, Integer userId) {
         Optional<FitnessClass> fitnessClassOpt = fitnessClassRepository.findById(classId);
         Optional<User> userOpt = userRepository.findById(userId);
@@ -68,6 +67,8 @@ public class FitnessClassService {
         if (fitnessClassOpt.isPresent() && userOpt.isPresent()) {
             FitnessClass fitnessClass = fitnessClassOpt.get();
             User user = userOpt.get();
+
+            // Usunięcie użytkownika z listy zapisanych użytkowników
             fitnessClass.getEnrolledUsers().remove(user);
             fitnessClassRepository.save(fitnessClass);
             return Optional.of(fitnessClass);
@@ -75,9 +76,20 @@ public class FitnessClassService {
         return Optional.empty();
     }
 
+
     public List<User> getEnrolledUsers(Long classId) {
         return fitnessClassRepository.findById(classId)
                 .map(FitnessClass::getEnrolledUsers)
                 .orElseThrow(() -> new RuntimeException("Class not found"));
     }
+
+    public List<FitnessClass> getEnrolledClassesForUser(Integer userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return user.getEnrolledClasses();
+        }
+        return List.of();
+    }
+
 }

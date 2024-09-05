@@ -1,6 +1,7 @@
 package com.example.gymServer.classes;
 
 import com.example.gymServer.authorization.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,6 +29,7 @@ public class FitnessClass {
 
     private String className;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "class_enrollments",

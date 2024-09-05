@@ -1,16 +1,14 @@
 package com.example.gymServer.perosnalTrainer;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "personal_trainer")
 public class PersonalTrainer {
 
@@ -22,4 +20,7 @@ public class PersonalTrainer {
     private String surname;
     private String phoneNumber;
     private String email;
+
+    @Lob
+    private byte[] photo;
 }
