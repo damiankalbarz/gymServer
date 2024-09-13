@@ -45,7 +45,8 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/api/v1/membership-pass/**"
+            "/api/v1/membership-pass/**",
+            "/api/v1/auth/google-authenticate"
     };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
