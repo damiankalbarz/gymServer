@@ -2,6 +2,7 @@ package com.example.gymServer.subscription;
 
 import com.example.gymServer.authorization.user.User;
 import com.example.gymServer.authorization.user.UserRepository;
+import com.example.gymServer.twilio.TwilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
+
+    @Autowired
+    TwilioService twilioService;
 
     @Autowired
     public SubscriptionService(SubscriptionRepository subscriptionRepository, UserRepository userRepository) {
@@ -30,6 +34,7 @@ public class SubscriptionService {
         subscription.setUser(user);
         subscription.setStartDate(startDate);
         subscription.setEndDate(endDate);
+        twilioService.sendSMS(String.valueOf(endDate),user.getPhoneNumber());
         return subscriptionRepository.save(subscription);
     }
 
