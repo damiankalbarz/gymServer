@@ -32,4 +32,21 @@ public class UserService {
         // save the new password
         repository.save(user);
     }
+
+    public User updateUser(UpdateUserRequest request, Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        if (request.getFirstname() != null) {
+            user.setFirstname(request.getFirstname());
+        }
+        if (request.getLastname() != null) {
+            user.setLastname(request.getLastname());
+        }
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+
+        repository.save(user);
+        return user;
+    }
 }

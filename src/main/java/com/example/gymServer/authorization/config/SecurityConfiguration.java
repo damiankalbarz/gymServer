@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(GET, "/api/v1/personal-trainer/**").permitAll()
                                 .requestMatchers(POST, "/api/v1/personal-trainer/**").permitAll()
                                 // Endpointy dla zalogowanych użytowkników
-                                .requestMatchers(GET, "/api/v1/personal-trainer/**", "/api/v1/classes/**").hasRole(Role.USER.name())
+                                .requestMatchers(GET, "/api/users/me", "/api/v1/personal-trainer/**", "/api/v1/classes/**").hasRole(Role.USER.name())
                                 .requestMatchers(POST, "/api/v1/training-goals").hasRole(Role.USER.name())
                                 .requestMatchers(PUT, "/api/v1/training-goals/**").hasRole(Role.USER.name())
                                 .requestMatchers(DELETE, "/api/v1/training-goals/**").hasRole(Role.USER.name())

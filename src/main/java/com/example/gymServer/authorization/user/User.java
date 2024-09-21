@@ -34,19 +34,22 @@ public class User implements UserDetails {
   private String phoneNumber;
   private String password;
 
-
+  @JsonIgnore
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private Subscription subscription;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TrainingGoal> trainingGoals;
 
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
+  @JsonIgnore
   @ManyToMany(mappedBy = "enrolledUsers")
   private List<FitnessClass> enrolledClasses;
 
