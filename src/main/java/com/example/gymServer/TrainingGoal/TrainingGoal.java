@@ -3,6 +3,7 @@ package com.example.gymServer.TrainingGoal;
 import com.example.gymServer.authorization.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class TrainingGoal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Content must not be blank")
     @Column(nullable = false)
     private String content;
 
