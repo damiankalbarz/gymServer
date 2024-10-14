@@ -29,7 +29,7 @@ public class PersonalTrainerControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        trainer = new PersonalTrainer(1L, "John", "Doe", "123456789", "john.doe@example.com");
+        trainer = new PersonalTrainer(1L, "John", "Doe", "123456789", "john.doe@example.com", "".getBytes());
     }
 
     @Test
