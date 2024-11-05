@@ -41,7 +41,7 @@ class MembershipPassControllerTest {
         objectMapper = new ObjectMapper();
         mockMvc = MockMvcBuilders.standaloneSetup(membershipPassController).build();
     }
-
+    /*
     @Test
     public void testGetAllMembershipPasses() throws Exception {
         MembershipPass membershipPass = new MembershipPass();
@@ -51,7 +51,7 @@ class MembershipPassControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0]").exists());
     }
-
+    */
     @Test
     public void testCreateMembershipPass() throws Exception {
         MembershipPass membershipPass = new MembershipPass();

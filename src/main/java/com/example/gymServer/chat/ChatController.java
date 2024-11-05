@@ -7,21 +7,27 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import java.util.UUID;
+
 @Controller
 public class ChatController {
 
-    @MessageMapping("/api/v1/sendMessage")
-    @SendTo("/api/v1/topic/messages")
+    @MessageMapping("/sendMessage")
+    @SendTo("/topic/messages")
     public ChatMessage sendMessage(ChatMessage message) {
+        if (message.getUserId() == null || message.getUserId().isEmpty()) {
+            message.setUserId(UUID.randomUUID().toString());
+        }
+
         // Anonimowi użytkownicy mogą wysyłać wiadomości
-        message.setSender("Anonymous");
+        message.setSender("user");
+        System.out.println(message);
         return message;
     }
 
-    @MessageMapping("/api/v1/adminReply")
-    @SendTo("/api/v1/topic/messages")
+    @MessageMapping("/adminReply")
+    @SendTo("/topic/messages")
     public ChatMessage adminReply(ChatMessage message) {
-        // Tylko administratorzy i menedżerowie mogą odpowiedzieć
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MANAGER"))) {
@@ -29,6 +35,9 @@ public class ChatController {
             return message;
         } else {
             throw new AccessDeniedException("Tylko administratorzy i menedżerowie mogą odpowiadać");
-        }
+        }/*
+        message.setSender("Admin");
+        return message;*/
     }
+
 }

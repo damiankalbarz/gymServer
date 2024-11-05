@@ -69,7 +69,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(PUT, "/api/v1/training-goals/**").hasRole(Role.USER.name())
                                 .requestMatchers(DELETE, "/api/v1/training-goals/**").hasRole(Role.USER.name())
                                 // Endpointy dla administratorów i menedżerów
-                                .requestMatchers("/adminReply/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                                .requestMatchers("/app/adminReply/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                                 .requestMatchers("/api/v1/management/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                                 .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_READ.name(), Permission.MANAGER_READ.name())
                                 .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(Permission.ADMIN_CREATE.name(), Permission.MANAGER_CREATE.name())
