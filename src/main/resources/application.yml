@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gym
-    username: postgres
+    url: jdbc:postgresql://gym-db.chi6s0eca89l.eu-north-1.rds.amazonaws.com:5432/postgres?sslmode=require
+    username: root
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
