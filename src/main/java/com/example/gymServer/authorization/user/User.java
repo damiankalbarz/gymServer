@@ -14,10 +14,7 @@ import java.util.List;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,8 +41,9 @@ public class User implements UserDetails {
   @Email(message = "Email should be valid")
   private String email;
 
+  @Getter
   @NotBlank(message = "Phone number must not be blank")
-  @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
+  @Size(min = 9, max = 9, message = "Phone number must be 9")
   private String phoneNumber;
 
   @NotBlank(message = "Password must not be blank")
@@ -106,4 +104,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }

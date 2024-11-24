@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 /*
 @WebMvcTest(FitnessClassController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class FitnessClassControllerTest {
 
     @Autowired
@@ -44,6 +46,9 @@ class FitnessClassControllerTest {
 
         user = new User();
         user.setEmail("testuser@example.com");
+        user.setLastname("test");
+        user.setFirstname("test");
+        user.setPassword("12345678");
 
         fitnessClass = new FitnessClass();
         fitnessClass.setId(1L);
@@ -51,7 +56,7 @@ class FitnessClassControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "testuser@example.com")
+    @WithMockUser(username = "testuser@example.com", authorities = { "ADMIN", "USER" })
     void testEnrollUserSuccess() throws Exception {
         when(fitnessClassService.enrollUser(1L, 1)).thenReturn(Optional.of(fitnessClass));
 
