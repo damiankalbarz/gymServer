@@ -7,17 +7,17 @@ import com.example.gymServer.authorization.token.TokenRepository;
 import com.example.gymServer.authorization.token.TokenType;
 import com.example.gymServer.authorization.user.User;
 import com.example.gymServer.authorization.user.UserRepository;
+import com.example.gymServer.models.Subscription;
+import com.example.gymServer.repository.SubscriptionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.gymServer.subscription.*;
 
 
 import java.io.IOException;

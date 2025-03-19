@@ -1,5 +1,6 @@
 package com.example.gymServer.perosnalTrainer;
 
+import com.example.gymServer.models.PersonalTrainer;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

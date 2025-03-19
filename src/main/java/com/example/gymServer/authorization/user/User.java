@@ -1,10 +1,10 @@
 package com.example.gymServer.authorization.user;
 
 
-import com.example.gymServer.TrainingGoal.TrainingGoal;
+import com.example.gymServer.models.TrainingGoal;
 import com.example.gymServer.authorization.token.Token;
-import com.example.gymServer.classes.FitnessClass;
-import com.example.gymServer.subscription.Subscription;
+import com.example.gymServer.models.FitnessClass;
+import com.example.gymServer.models.Subscription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

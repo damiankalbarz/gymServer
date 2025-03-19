@@ -2,6 +2,9 @@ package com.example.gymServer.classes;
 
 import com.example.gymServer.authorization.config.JwtService;
 import com.example.gymServer.authorization.user.User;
+import com.example.gymServer.controllers.FitnessClassController;
+import com.example.gymServer.models.FitnessClass;
+import com.example.gymServer.services.FitnessClassService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

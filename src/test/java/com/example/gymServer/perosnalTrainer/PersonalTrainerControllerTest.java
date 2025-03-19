@@ -1,7 +1,8 @@
 package com.example.gymServer.perosnalTrainer;
 
-import com.example.gymServer.perosnalTrainer.PersonalTrainerController;
-import com.example.gymServer.perosnalTrainer.PersonalTrainerService;
+import com.example.gymServer.controllers.PersonalTrainerController;
+import com.example.gymServer.models.PersonalTrainer;
+import com.example.gymServer.services.PersonalTrainerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
