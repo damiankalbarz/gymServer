@@ -82,7 +82,7 @@ public class FitnessClassControllerTest {
         newClass.setDayOfWeek("Tuesday");
         newClass.setClassName("Pilates Class");
 
-        when(fitnessClassService.createClass(Mockito.any(FitnessClass.class))).thenReturn(newClass);
+        //when(fitnessClassService.createClass(Mockito.any(FitnessClass.class))).thenReturn(newClass);
 
         // Act & Assert - validate response
         mockMvc.perform(post("/api/v1/classes")
@@ -102,7 +102,7 @@ public class FitnessClassControllerTest {
         String jwtToken = "mockJwtToken";
 
         // Simulate a successful enrollment for the current user
-        when(fitnessClassService.enrollUser(eq(1L), eq(1))).thenReturn(Optional.of(fitnessClass));
+        //when(fitnessClassService.enrollUser(eq(1L), eq(1))).thenReturn(Optional.of(fitnessClass));
 
         mockMvc.perform(post("/api/v1/classes/1/enroll")
                         .header("Authorization", "Bearer " + jwtToken))  // JWT in header

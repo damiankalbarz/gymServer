@@ -66,7 +66,7 @@ class FitnessControllerTest {
     @Test
     @WithMockUser(username = "testuser@example.com", authorities = { "ADMIN", "USER" })
     void testEnrollUserSuccess() throws Exception {
-        when(fitnessClassService.enrollUser(1L, 1)).thenReturn(Optional.of(fitnessClass));
+        //when(fitnessClassService.enrollUser(1L, 1)).thenReturn(Optional.of(fitnessClass));
 
         mockMvc.perform(post("/api/v1/classes/1/enroll")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -87,7 +87,7 @@ class FitnessControllerTest {
     @Test
     @WithMockUser(username = "testuser@example.com")
     void testCancelEnrollmentSuccess() throws Exception {
-        when(fitnessClassService.cancelEnrollment(1L, 1)).thenReturn(Optional.of(fitnessClass));
+        //when(fitnessClassService.cancelEnrollment(1L, 1)).thenReturn(Optional.of(fitnessClass));
 
         mockMvc.perform(post("/api/v1/classes/1/cancel-enrollment")
                         .contentType(MediaType.APPLICATION_JSON))

@@ -2,9 +2,13 @@ package com.example.gymServer.services;
 
 import com.example.gymServer.authorization.user.User;
 import com.example.gymServer.authorization.user.UserRepository;
+import com.example.gymServer.dto.FitnessClassDTO;
+import com.example.gymServer.mapper.FitnessClassMapper;
 import com.example.gymServer.models.FitnessClass;
 import com.example.gymServer.repository.FitnessClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,38 +19,51 @@ public class FitnessClassService {
 
     private final FitnessClassRepository fitnessClassRepository;
     private final UserRepository userRepository;
+    private final FitnessClassMapper fitnessClassMapper;
 
     @Autowired
-    public FitnessClassService(FitnessClassRepository fitnessClassRepository, UserRepository userRepository) {
+    public FitnessClassService(FitnessClassRepository fitnessClassRepository, UserRepository userRepository, FitnessClassMapper fitnessClassMapper) {
         this.fitnessClassRepository = fitnessClassRepository;
         this.userRepository = userRepository;
+        this.fitnessClassMapper = fitnessClassMapper;
     }
 
-    public List<FitnessClass> getAllClasses() {
-        return fitnessClassRepository.findAll();
+    public ResponseEntity<List<FitnessClassDTO>> getAllClasses() {
+        List<FitnessClass> classes = fitnessClassRepository.findAll();
+        return new ResponseEntity<>(fitnessClassMapper.toFitnessClassDTOs(classes), HttpStatus.OK);
     }
 
-    public Optional<FitnessClass> getClassById(Long id) {
-        return fitnessClassRepository.findById(id);
+    public ResponseEntity<FitnessClassDTO> getClassById(Long id) {
+        FitnessClass fitnessClass = fitnessClassRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Class not found"));
+        return new ResponseEntity<>(fitnessClassMapper.toFitnessClassDTO(fitnessClass), HttpStatus.OK);
     }
 
-    public FitnessClass createClass(FitnessClass fitnessClass) {
-        return fitnessClassRepository.save(fitnessClass);
+    public ResponseEntity<FitnessClassDTO> createClass(FitnessClassDTO fitnessClassDTO) {
+        FitnessClass fitnessClass = fitnessClassMapper.toFitnessClass(fitnessClassDTO);
+        FitnessClass savedClass = fitnessClassRepository.save(fitnessClass);
+        return new ResponseEntity<>(fitnessClassMapper.toFitnessClassDTO(savedClass), HttpStatus.CREATED);
     }
 
-    public FitnessClass updateClass(Long id, FitnessClass updatedClass) {
-        if (fitnessClassRepository.existsById(id)) {
-            updatedClass.setId(id);
-            return fitnessClassRepository.save(updatedClass);
+    public ResponseEntity<Void> updateClass(Long id, FitnessClassDTO updatedClassDTO) {
+        if (!fitnessClassRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return null;
+        FitnessClass updatedClass = fitnessClassMapper.toFitnessClass(updatedClassDTO);
+        updatedClass.setId(id);
+        fitnessClassRepository.save(updatedClass);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    public void deleteClass(Long id) {
+    public ResponseEntity<Void> deleteClass(Long id) {
+        if (!fitnessClassRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         fitnessClassRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    public Optional<FitnessClass> enrollUser(Long classId, Integer userId) {
+    public Optional<FitnessClassDTO> enrollUser(Long classId, Integer userId) {
         Optional<FitnessClass> fitnessClassOpt = fitnessClassRepository.findById(classId);
         Optional<User> userOpt = userRepository.findById(userId);
 
@@ -57,27 +74,25 @@ public class FitnessClassService {
             if (fitnessClass.getEnrolledUsers().size() < fitnessClass.getMaxUsers()) {
                 fitnessClass.getEnrolledUsers().add(user);
                 fitnessClassRepository.save(fitnessClass);
-                return Optional.of(fitnessClass);
+                return Optional.of(fitnessClassMapper.toFitnessClassDTO(fitnessClass));
             }
         }
         return Optional.empty();
     }
-    public Optional<FitnessClass> cancelEnrollment(Long classId, Integer userId) {
+
+    public Optional<FitnessClassDTO> cancelEnrollment(Long classId, Integer userId) {
         Optional<FitnessClass> fitnessClassOpt = fitnessClassRepository.findById(classId);
         Optional<User> userOpt = userRepository.findById(userId);
 
         if (fitnessClassOpt.isPresent() && userOpt.isPresent()) {
             FitnessClass fitnessClass = fitnessClassOpt.get();
             User user = userOpt.get();
-
-            // Usunięcie użytkownika z listy zapisanych użytkowników
             fitnessClass.getEnrolledUsers().remove(user);
             fitnessClassRepository.save(fitnessClass);
-            return Optional.of(fitnessClass);
+            return Optional.of(fitnessClassMapper.toFitnessClassDTO(fitnessClass));
         }
         return Optional.empty();
     }
-
 
     public List<User> getEnrolledUsers(Long classId) {
         return fitnessClassRepository.findById(classId)
@@ -85,13 +100,13 @@ public class FitnessClassService {
                 .orElseThrow(() -> new RuntimeException("Class not found"));
     }
 
-    public List<FitnessClass> getEnrolledClassesForUser(Integer userId) {
+    public List<FitnessClassDTO> getEnrolledClassesForUser(Integer userId) {
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            return user.getEnrolledClasses();
+            List<FitnessClass> classes = user.getEnrolledClasses();
+            return fitnessClassMapper.toFitnessClassDTOs(classes);
         }
         return List.of();
     }
-
 }
