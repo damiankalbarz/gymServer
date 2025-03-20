@@ -1,36 +1,45 @@
 package com.example.gymServer.controllers;
 
-import com.example.gymServer.models.PersonalTrainer;
+import com.example.gymServer.dto.PersonalTrainerDTO;
 import com.example.gymServer.services.PersonalTrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/personal-trainer")
+@RequestMapping("/api/v1/personal-trainers")
 public class PersonalTrainerController {
 
+    private final PersonalTrainerService personalTrainerService;
+
     @Autowired
-    private PersonalTrainerService personalTrainerService;
+    public PersonalTrainerController(PersonalTrainerService personalTrainerService) {
+        this.personalTrainerService = personalTrainerService;
+    }
 
     @GetMapping
-    public List<PersonalTrainer> getAllPersonalTrainers() {
-        return personalTrainerService.getAllPersonalTrainers();
+    public ResponseEntity<List<PersonalTrainerDTO>> getAllPersonalTrainers() {
+        List<PersonalTrainerDTO> trainers = personalTrainerService.getAllPersonalTrainers();
+        return ResponseEntity.ok(trainers);
     }
 
     @GetMapping("/{id}")
-    public PersonalTrainer getPersonalTrainerById(@PathVariable Long id) {
-        return personalTrainerService.getPersonalTrainerById(id);
+    public ResponseEntity<PersonalTrainerDTO> getPersonalTrainerById(@PathVariable Long id) {
+        PersonalTrainerDTO trainer = personalTrainerService.getPersonalTrainerById(id);
+        return trainer != null ? ResponseEntity.ok(trainer) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public PersonalTrainer createPersonalTrainer(@RequestBody PersonalTrainer personalTrainer) {
-        return personalTrainerService.savePersonalTrainer(personalTrainer);
+    public ResponseEntity<PersonalTrainerDTO> createPersonalTrainer(@RequestBody PersonalTrainerDTO personalTrainerDTO) {
+        PersonalTrainerDTO createdTrainer = personalTrainerService.savePersonalTrainer(personalTrainerDTO);
+        return ResponseEntity.ok(createdTrainer);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePersonalTrainer(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePersonalTrainer(@PathVariable Long id) {
         personalTrainerService.deletePersonalTrainer(id);
+        return ResponseEntity.noContent().build();
     }
 }
