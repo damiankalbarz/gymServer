@@ -1,6 +1,7 @@
 package com.example.gymServer.membershipPass;
 
 import com.example.gymServer.controllers.MembershipPassController;
+import com.example.gymServer.dto.MembershipPassDTO;
 import com.example.gymServer.models.MembershipPass;
 import com.example.gymServer.services.MembershipPassService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +13,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Collections;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -39,20 +44,20 @@ class MembershipPassControllerTest {
         objectMapper = new ObjectMapper();
         mockMvc = MockMvcBuilders.standaloneSetup(membershipPassController).build();
     }
-    /*
+
     @Test
     public void testGetAllMembershipPasses() throws Exception {
-        MembershipPass membershipPass = new MembershipPass();
+        MembershipPassDTO membershipPass = new MembershipPassDTO();
         given(membershipPassService.getAllMembershipPasses()).willReturn(Collections.singletonList(membershipPass));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/membership-pass"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0]").exists());
     }
-    */
+
     @Test
     public void testCreateMembershipPass() throws Exception {
-        MembershipPass membershipPass = new MembershipPass();
+        MembershipPassDTO membershipPass = new MembershipPassDTO();
         given(membershipPassService.saveMembershipPass(membershipPass)).willReturn(membershipPass);
 
         mockMvc.perform(post("/api/v1/membership-pass")

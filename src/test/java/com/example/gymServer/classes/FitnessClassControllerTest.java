@@ -4,6 +4,7 @@ import com.example.gymServer.authorization.config.JwtService;
 import com.example.gymServer.authorization.user.User;
 import com.example.gymServer.controllers.FitnessClassController;
 import com.example.gymServer.models.FitnessClass;
+import com.example.gymServer.dto.FitnessClassDTO;
 import com.example.gymServer.services.FitnessClassService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,11 +43,11 @@ public class FitnessClassControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private FitnessClass fitnessClass;
+    private FitnessClassDTO fitnessClass;
 
     @BeforeEach
     public void setup() {
-        fitnessClass = new FitnessClass();
+        fitnessClass = new FitnessClassDTO();
         fitnessClass.setId(1L);
         fitnessClass.setPersonalTrainerId(1L);
         fitnessClass.setStartTime(LocalTime.of(10, 0));
@@ -74,7 +76,7 @@ public class FitnessClassControllerTest {
     @Test
     public void testCreateFitnessClass_Valid() throws Exception {
         // Arrange - simulate valid class creation
-        FitnessClass newClass = new FitnessClass();
+        FitnessClassDTO newClass = new FitnessClassDTO();
         newClass.setPersonalTrainerId(2L);
         newClass.setStartTime(LocalTime.of(14, 0));
         newClass.setEndTime(LocalTime.of(15, 0));
@@ -82,7 +84,7 @@ public class FitnessClassControllerTest {
         newClass.setDayOfWeek("Tuesday");
         newClass.setClassName("Pilates Class");
 
-        //when(fitnessClassService.createClass(Mockito.any(FitnessClass.class))).thenReturn(newClass);
+        when(fitnessClassService.createClass(Mockito.any(FitnessClassDTO.class))).thenReturn(ResponseEntity.ok(newClass));
 
         // Act & Assert - validate response
         mockMvc.perform(post("/api/v1/classes")
@@ -102,7 +104,7 @@ public class FitnessClassControllerTest {
         String jwtToken = "mockJwtToken";
 
         // Simulate a successful enrollment for the current user
-        //when(fitnessClassService.enrollUser(eq(1L), eq(1))).thenReturn(Optional.of(fitnessClass));
+        when(fitnessClassService.enrollUser(eq(1L), eq(1))).thenReturn(Optional.of(fitnessClass));
 
         mockMvc.perform(post("/api/v1/classes/1/enroll")
                         .header("Authorization", "Bearer " + jwtToken))  // JWT in header
