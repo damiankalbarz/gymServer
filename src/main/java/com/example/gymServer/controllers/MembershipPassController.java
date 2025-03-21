@@ -1,31 +1,34 @@
 package com.example.gymServer.controllers;
 
+import com.example.gymServer.dto.MembershipPassDTO;
 import com.example.gymServer.services.MembershipPassService;
-import com.example.gymServer.models.MembershipPass;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/membership-pass")
+@RequiredArgsConstructor
 public class MembershipPassController {
 
-    @Autowired
-    private MembershipPassService membershipPassService;
+    private final MembershipPassService membershipPassService;
 
     @GetMapping
-    public List<MembershipPass> getAllMembershipPasses() {
-        return membershipPassService.getAllMembershipPasses();
+    public ResponseEntity<List<MembershipPassDTO>> getAllMembershipPasses() {
+        return ResponseEntity.ok(membershipPassService.getAllMembershipPasses());
     }
 
     @PostMapping
-    public MembershipPass createMembershipPass(@RequestBody MembershipPass membershipPass) {
-        return membershipPassService.saveMembershipPass(membershipPass);
+    public ResponseEntity<MembershipPassDTO> createMembershipPass(@RequestBody MembershipPassDTO membershipPassDTO) {
+        MembershipPassDTO savedMembershipPass = membershipPassService.saveMembershipPass(membershipPassDTO);
+        return ResponseEntity.ok(savedMembershipPass);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMembershipPass(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteMembershipPass(@PathVariable Long id) {
         membershipPassService.deleteMembershipPass(id);
+        return ResponseEntity.noContent().build();
     }
 }

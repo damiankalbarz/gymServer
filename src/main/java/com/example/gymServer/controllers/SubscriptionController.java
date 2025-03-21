@@ -1,8 +1,8 @@
 package com.example.gymServer.controllers;
 
-import com.example.gymServer.models.Subscription;
+import com.example.gymServer.dto.SubscriptionDTO;
 import com.example.gymServer.services.SubscriptionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,25 +11,26 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/subscriptions")
+@RequiredArgsConstructor
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService) {
-        this.subscriptionService = subscriptionService;
-    }
-
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Subscription> getSubscriptionByUserId(@PathVariable Integer userId) {
-        Optional<Subscription> subscription = subscriptionService.getSubscriptionByUserId(Long.valueOf(userId));
+    public ResponseEntity<SubscriptionDTO> getSubscriptionByUserId(@PathVariable Long userId) {
+        Optional<SubscriptionDTO> subscription = subscriptionService.getSubscriptionByUserId(userId);
         return subscription.map(ResponseEntity::ok)
-                           .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/user/{userId}")
-    public Subscription createOrUpdateSubscription(@PathVariable Integer userId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-        return subscriptionService.createOrUpdateSubscription(userId, startDate, endDate);
+    public ResponseEntity<SubscriptionDTO> createOrUpdateSubscription(
+            @PathVariable Long userId,
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+
+        SubscriptionDTO subscription = subscriptionService.createOrUpdateSubscription(userId, startDate, endDate);
+        return ResponseEntity.ok(subscription);
     }
 
     @PutMapping("/user/{userId}/extend")
